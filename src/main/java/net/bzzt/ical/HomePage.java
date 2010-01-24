@@ -63,35 +63,6 @@ public class HomePage extends ValidatorLayoutPage {
 		}
 	}
 	
-	public class FileForm extends Form<FileForm> {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private FileUpload file;
-		
-		public FileForm(String id) {
-			super(id);
-			setDefaultModel(new CompoundPropertyModel<FileForm>(this));
-
-			add(new FileUploadField("file"));
-		}
-
-		/* (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
-		 */
-		@Override
-		protected void onSubmit() {
-//			URI uri = this.getModelObject().url;
-//
-//			PageParameters parameters = new PageParameters();
-//			parameters.add("url", uri.toString());
-//			setResponsePage(UrlValidationPage.class, parameters);
-		}
-	}
-
 	private static final long serialVersionUID = 1L;
 
 	public static WebMarkupContainer getValidationResult(String id, InputStream responseBody,
@@ -141,7 +112,7 @@ public class HomePage extends ValidatorLayoutPage {
 	 */
 	public HomePage(final PageParameters parameters) {
 		add(new UrlFormPanel("urlForm"));
-		add(new FileForm("fileForm"));
+		add(new FileFormPanel("fileForm"));
 		add(new SnippetForm("snippetForm"));
 		add(new WebMarkupContainer("results"));
 	}
