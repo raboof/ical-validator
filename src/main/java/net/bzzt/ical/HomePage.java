@@ -127,7 +127,7 @@ public class HomePage extends ValidatorLayoutPage {
 		List<ValidationResult> results = (List<ValidationResult>) validationResultHandler
 				.getResults();
 
-		return(new ValidationResultPanel(id, results));
+		return(new ValidationResultOverviewPanel(id, results));
 
 	}
 

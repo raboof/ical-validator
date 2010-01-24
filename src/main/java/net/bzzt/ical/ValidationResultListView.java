@@ -22,7 +22,7 @@ public class ValidationResultListView extends ListView<ValidationResult> {
 
 	@Override
 	protected void populateItem(ListItem<ValidationResult> item) {
-		item.add(new Label("message", item.getModelObject().getText()));
+		item.add(new SingleValidationResult("message", item.getModelObject()));
 	}
 
 }
