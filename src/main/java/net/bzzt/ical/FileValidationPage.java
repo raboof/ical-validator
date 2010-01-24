@@ -11,6 +11,7 @@ public class FileValidationPage extends ValidatorLayoutPage {
 	}
 
 	private void init(FileUpload fileUpload) {
+		add(new FileFormPanel("form"));
 		
 		try {
 			add(HomePage.getValidationResult("result", fileUpload.getInputStream(), fileUpload.getContentType()));

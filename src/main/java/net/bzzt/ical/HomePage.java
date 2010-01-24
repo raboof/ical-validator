@@ -34,35 +34,6 @@ import org.wicketstuff.annotation.strategy.MountMixedParam;
 @MountMixedParam(parameterNames = { "url" })
 public class HomePage extends ValidatorLayoutPage {
 
-	public class SnippetForm extends Form<SnippetForm> {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private String snippet;
-		
-		public SnippetForm(String id) {
-			super(id);
-			setDefaultModel(new CompoundPropertyModel<SnippetForm>(this));
-
-			add(new TextArea<String>("snippet"));
-		}
-
-		/* (non-Javadoc)
-		 * @see org.apache.wicket.markup.html.form.Form#onSubmit()
-		 */
-		@Override
-		protected void onSubmit() {
-//			URI uri = SnippetForm.this.getModelObject().url;
-//
-//			PageParameters parameters = new PageParameters();
-//			parameters.add("url", uri.toString());
-//			setResponsePage(UrlValidationPage.class, parameters);
-		}
-	}
-	
 	private static final long serialVersionUID = 1L;
 
 	public static WebMarkupContainer getValidationResult(String id, InputStream responseBody,
@@ -113,7 +84,7 @@ public class HomePage extends ValidatorLayoutPage {
 	public HomePage(final PageParameters parameters) {
 		add(new UrlFormPanel("urlForm"));
 		add(new FileFormPanel("fileForm"));
-		add(new SnippetForm("snippetForm"));
+		add(new SnippetFormPanel("snippetForm", null, null));
 		add(new WebMarkupContainer("results"));
 	}
 
