@@ -102,7 +102,7 @@
 		<dependency>
 			<groupId>net.fortuna.ical4j</groupId>
 			<artifactId>ical4j</artifactId>
-			<version>git-validator-SNAPSHOT</version>
+			<version>1.0-git-validator-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-httpclient</groupId>
