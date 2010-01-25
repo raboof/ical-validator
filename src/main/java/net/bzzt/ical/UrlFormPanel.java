@@ -1,6 +1,7 @@
 package net.bzzt.ical;
 
 import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -37,6 +38,15 @@ public class UrlFormPanel extends Panel {
 		protected void onSubmit() {
 			URI uri = UrlForm.this.getModelObject().url;
 
+			if ("webcal".equals(uri.getScheme()))
+			{
+				try {
+					uri = new URI(uri.toString().replace("webcal", "http"), false);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+			
 			PageParameters parameters = new PageParameters();
 			parameters.add("url", uri.toString());
 			setResponsePage(UrlValidationPage.class, parameters);
