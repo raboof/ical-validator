@@ -1,5 +1,7 @@
 package net.bzzt.ical;
 
+import java.io.IOException;
+
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.wicketstuff.annotation.mount.MountPath;
 
@@ -7,16 +9,16 @@ import org.wicketstuff.annotation.mount.MountPath;
 public class FileValidationPage extends ValidatorLayoutPage {
 	public FileValidationPage(FileUpload fileUpload)
 	{
-		init(fileUpload);
+		try {
+			init(fileUpload);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	private void init(FileUpload fileUpload) {
+	private void init(FileUpload fileUpload) throws IOException {
 		add(new FileFormPanel("form"));
 		
-		try {
-			add(HomePage.getValidationResult("result", fileUpload.getInputStream(), fileUpload.getContentType()));
-		} catch (Exception e) {
-			error(e);
-		}
+		add(HomePage.getValidationResult("result", fileUpload.getInputStream(), null));
 	}
 }
