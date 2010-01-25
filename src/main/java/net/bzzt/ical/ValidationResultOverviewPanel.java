@@ -26,7 +26,14 @@ public class ValidationResultOverviewPanel extends Panel {
 
 		for (ValidationResult result : results)
 		{
-			resultMap.put(result.component.toString(), asSerializable(result));
+			if (result.component != null)
+			{
+				resultMap.put(result.component.toString(), asSerializable(result));
+			}	
+			else
+			{
+				resultMap.put(null, asSerializable(result));
+			}
 		}
 		
 		add(new Label("summary", results.size() + " results in " + resultMap.keySet().size() + " components"));
