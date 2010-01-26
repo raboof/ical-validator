@@ -4,6 +4,8 @@ import java.util.Locale;
 
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.IConverterLocator;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.util.convert.ConversionException;
@@ -18,6 +20,8 @@ import org.wicketstuff.annotation.scan.AnnotatedMountScanner;
  */
 public class WicketApplication extends WebApplication
 {    
+	private static final Log LOG = LogFactory.getLog(WicketApplication.class);
+	
     /**
      * Constructor
      */
@@ -34,6 +38,8 @@ public class WicketApplication extends WebApplication
 	protected void init() {
 		new AnnotatedMountScanner().scanPackage("net.bzzt.ical").mount(this);
 
+		LOG.info("Mode: " + getConfigurationType());
+		
 		super.init();
 	}
 
