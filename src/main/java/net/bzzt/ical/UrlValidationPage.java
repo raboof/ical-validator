@@ -5,6 +5,7 @@ import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.wicket.PageParameters;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.wicketstuff.annotation.mount.MountPath;
 import org.wicketstuff.annotation.strategy.MountMixedParam;
@@ -26,7 +27,7 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 		GetMethod method = new GetMethod();
 		try {
 			method.setURI(uri);
-		} catch (URIException e) {
+		} catch (Exception e) {
 			error(e);
 		}
 
@@ -42,6 +43,7 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 		try {
 			add(HomePage.getValidationResult("result", method.getResponseBodyAsStream(), method.getResponseCharSet()));
 		} catch (Exception e) {
+			add(new WebMarkupContainer("result"));
 			error(e);
 		}
 	}
