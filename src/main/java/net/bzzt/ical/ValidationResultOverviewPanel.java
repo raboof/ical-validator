@@ -1,6 +1,7 @@
 package net.bzzt.ical;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -35,15 +36,25 @@ public class ValidationResultOverviewPanel extends Panel {
 				resultMap.put(null, asSerializable(result));
 			}
 		}
+
+		String summary;
+
+		if (results.isEmpty())
+		{
+			summary = "Success! ";
+		}
+		else
+		{
+			summary = "Errors found: " + results.size() + " results in " + resultMap.keySet().size() + " components";
+		}
 		
-		add(new Label("summary", results.size() + " results in " + resultMap.keySet().size() + " components"));
+		add(new Label("summary", summary));
 		
 		List<ValidationResult> generalFailures = (List<ValidationResult>) resultMap.get(null);
 		if (generalFailures.isEmpty())
 		{
 			add(new Label("message", "None."));
 			WebMarkupContainer webMarkupContainer = new WebMarkupContainer("messages");
-//			webMarkupContainer.add(new WebMarkupContainer("message"));
 			add(webMarkupContainer.setVisible(false));
 		}
 		else
