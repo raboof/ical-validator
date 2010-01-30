@@ -2,11 +2,15 @@ package net.bzzt.ical;
 
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
 import org.wicketstuff.annotation.mount.MountPath;
 
 @MountPath(path = "filevalidate")
 public class FileValidationPage extends ValidatorLayoutPage {
+	private static final Log LOG = LogFactory.getLog(FileValidationPage.class);
+	
 	public FileValidationPage(FileUpload fileUpload)
 	{
 		try {
@@ -18,6 +22,8 @@ public class FileValidationPage extends ValidatorLayoutPage {
 
 	private void init(FileUpload fileUpload) throws IOException {
 		add(new FileFormPanel("form"));
+		
+		LOG.info("Validating uploaded file" + fileUpload.getClientFileName());
 		
 		add(HomePage.getValidationResult("result", fileUpload.getInputStream(), null));
 	}

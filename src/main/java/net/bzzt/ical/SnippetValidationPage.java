@@ -2,11 +2,14 @@ package net.bzzt.ical;
 
 import java.io.ByteArrayInputStream;
 
-import org.apache.wicket.markup.html.form.upload.FileUpload;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.wicketstuff.annotation.mount.MountPath;
 
 @MountPath(path = "textvalidate")
 public class SnippetValidationPage extends ValidatorLayoutPage {
+	private static final Log LOG = LogFactory.getLog(SnippetValidationPage.class);
+
 	public SnippetValidationPage(String snippet)
 	{
 		init(snippet, "UTF-8");
@@ -20,6 +23,7 @@ public class SnippetValidationPage extends ValidatorLayoutPage {
 		add(new SnippetFormPanel("form", snippet, charset));
 		
 		try {
+			LOG.info("Validating snippet");
 			add(HomePage.getValidationResult("result", new ByteArrayInputStream(snippet.getBytes(charset)), charset));
 		} catch (Exception e) {
 			error(e);

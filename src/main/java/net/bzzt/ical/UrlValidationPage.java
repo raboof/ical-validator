@@ -4,19 +4,25 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.wicketstuff.annotation.mount.MountPath;
 import org.wicketstuff.annotation.strategy.MountMixedParam;
+import org.wicketstuff.annotation.strategy.MountQueryString;
 
 @MountPath(path = "urlvalidate")
-@MountMixedParam(parameterNames = { "url" })
+//MountMixedParams didn't work behind apache proxypass when the url contained a %2F
+@MountQueryString
 public class UrlValidationPage extends ValidatorLayoutPage {
+	private static final Log LOG = LogFactory.getLog(UrlValidationPage.class);
+
 	public UrlValidationPage(PageParameters parameters)
 	{
 		try {
-			String url = (String) parameters.get("url");
+			String url = ((String[]) parameters.get("url"))[0];
 			init(new URI(url, true));
 		} catch (URIException e) {
 			e.printStackTrace();
@@ -41,6 +47,7 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 		add(new UrlFormPanel("urlForm", uri));
 
 		try {
+			LOG.info("Validating url " + uri);
 			add(HomePage.getValidationResult("result", method.getResponseBodyAsStream(), method.getResponseCharSet()));
 		} catch (Exception e) {
 			add(new WebMarkupContainer("result"));
