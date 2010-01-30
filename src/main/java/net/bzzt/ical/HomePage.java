@@ -73,8 +73,7 @@ public class HomePage extends ValidatorLayoutPage {
 		try {
 			calendar = builder.build(new ByteArrayInputStream(calendarString.getBytes(charSet)));
 		} catch (ParserException e1) {
-			Session.get().error("Error on line " + e1.getLineNo() + ": " + e1.getError());
-			return new ParserErrorPanel(id, e1);
+			return new ParserErrorPanel(id, calendarString, e1);
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
