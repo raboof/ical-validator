@@ -12,6 +12,11 @@ public class SnippetValidationPage extends ValidatorLayoutPage {
 
 	public SnippetValidationPage(String snippet)
 	{
+		if (snippet == null)
+		{
+			snippet = "";
+		}
+		
 		init(snippet, "UTF-8");
 	}
 
