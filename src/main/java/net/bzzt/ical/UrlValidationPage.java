@@ -22,8 +22,17 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 	public UrlValidationPage(PageParameters parameters)
 	{
 		try {
-			String url = ((String[]) parameters.get("url"))[0];
-			init(new URI(url, true));
+			String[] urls = (String[]) parameters.get("url");
+			if (urls != null && urls.length > 0)
+			{
+				String url = urls[0];
+				init(new URI(url, true));
+			}
+			else
+			{
+				init(null);
+			}
+			
 		} catch (URIException e) {
 			e.printStackTrace();
 		}
