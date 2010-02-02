@@ -20,7 +20,7 @@ public class ValidationResultOverviewPanel extends Panel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ValidationResultOverviewPanel(String id, List<ValidationResult> results) {
+	public ValidationResultOverviewPanel(String id, String charset, List<ValidationResult> results) {
 		super(id);
 		
 		final MultiValueMap<String, ValidationResult> resultMap = new MultiValueMap<String, ValidationResult>();
@@ -47,6 +47,8 @@ public class ValidationResultOverviewPanel extends Panel {
 		{
 			summary = "Errors found: " + results.size() + " results in " + resultMap.keySet().size() + " components";
 		}
+		
+		add(new Label("charset", charset));
 		
 		add(new Label("summary", summary));
 		
