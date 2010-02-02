@@ -1,9 +1,13 @@
 package net.bzzt.ical;
 
+import org.apache.commons.httpclient.Header;
+import org.apache.commons.httpclient.HeaderElement;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.URI;
 import org.apache.commons.httpclient.URIException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.PageParameters;
@@ -55,12 +59,35 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 		
 		add(new UrlFormPanel("urlForm", uri));
 
+		method.getResponseCharSet();
+		
 		try {
 			LOG.info("Validating url " + uri);
-			add(HomePage.getValidationResult("result", method.getResponseBodyAsStream(), method.getResponseCharSet()));
+			Header contentType = method.getResponseHeader("Content-Type");
+			String charSet = null;
+			if (contentType != null)
+			{
+				HeaderElement[] headerElements = contentType.getElements();
+				if (headerElements.length > 0)
+				{
+					NameValuePair parameter = headerElements[0].getParameterByName("charset");
+					if (parameter != null)
+					{
+						charSet = parameter.getValue();
+					}
+				}
+			}
+			
+			if (StringUtils.isBlank(charSet))
+			{
+				charSet = "utf-8";
+			}
+			
+			add(HomePage.getValidationResult("result", method.getResponseBodyAsStream(), charSet));
 		} catch (Exception e) {
 			add(new WebMarkupContainer("result"));
 			error(e);
+			LOG.error(e.getMessage(), e);
 		}
 	}
 }

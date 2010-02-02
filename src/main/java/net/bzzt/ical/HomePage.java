@@ -68,6 +68,14 @@ public class HomePage extends ValidatorLayoutPage {
 
 		calendarString = fixNewlines(calendarString, results);
 		
+		CollectingValidationResultHandler validationResultHandler = new CollectingValidationResultHandler();
+		ValidationResultHandler.set(validationResultHandler);
+
+		if (!"utf-8".equals(charSet))
+		{
+			validationResultHandler.onValidationResult(new ValidationResult(null, "Charset was [{0}] instead of utf-8 as recommended", new Object[] { charSet }, new ValidationRuleInfo("4.1.4")));
+		}
+		
 		CalendarBuilder builder = new CalendarBuilder();
 		Calendar calendar;
 		try {
@@ -83,9 +91,6 @@ public class HomePage extends ValidatorLayoutPage {
 		CompatibilityHints.setHintEnabled(
 				CompatibilityHints.KEY_RELAXED_PARSING, false);
 
-		CollectingValidationResultHandler validationResultHandler = new CollectingValidationResultHandler();
-		ValidationResultHandler.set(validationResultHandler);
-
 		try {
 			calendar.validate(true);
 		} catch (ValidationException e) {
@@ -96,7 +101,7 @@ public class HomePage extends ValidatorLayoutPage {
 		results.addAll((List<ValidationResult>) validationResultHandler
 				.getResults());
 
-		return(new ValidationResultOverviewPanel(id, results));
+		return(new ValidationResultOverviewPanel(id, charSet, results));
 
 	}
 
