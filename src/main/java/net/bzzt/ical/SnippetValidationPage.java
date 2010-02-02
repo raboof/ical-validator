@@ -2,6 +2,8 @@ package net.bzzt.ical;
 
 import java.io.ByteArrayInputStream;
 
+import net.bzzt.ical.services.IcalendarValidationService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wicketstuff.annotation.mount.MountPath;
@@ -29,7 +31,7 @@ public class SnippetValidationPage extends ValidatorLayoutPage {
 		
 		try {
 			LOG.info("Validating snippet");
-			add(HomePage.getValidationResult("result", new ByteArrayInputStream(snippet.getBytes(charset)), charset));
+			add(IcalendarValidationService.getValidationResult("result", new ByteArrayInputStream(snippet.getBytes(charset)), charset));
 		} catch (Exception e) {
 			error(e);
 		}

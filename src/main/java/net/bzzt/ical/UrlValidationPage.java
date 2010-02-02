@@ -1,5 +1,7 @@
 package net.bzzt.ical;
 
+import net.bzzt.ical.services.IcalendarValidationService;
+
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HeaderElement;
 import org.apache.commons.httpclient.HttpClient;
@@ -83,7 +85,7 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 				charSet = "utf-8";
 			}
 			
-			add(HomePage.getValidationResult("result", method.getResponseBodyAsStream(), charSet));
+			add(IcalendarValidationService.getValidationResult("result", method.getResponseBodyAsStream(), charSet));
 		} catch (Exception e) {
 			add(new WebMarkupContainer("result"));
 			error(e);

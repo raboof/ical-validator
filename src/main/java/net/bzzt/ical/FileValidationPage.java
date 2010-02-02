@@ -2,6 +2,8 @@ package net.bzzt.ical;
 
 import java.io.IOException;
 
+import net.bzzt.ical.services.IcalendarValidationService;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.markup.html.form.upload.FileUpload;
@@ -25,6 +27,6 @@ public class FileValidationPage extends ValidatorLayoutPage {
 		
 		LOG.info("Validating uploaded file" + fileUpload.getClientFileName());
 		
-		add(HomePage.getValidationResult("result", fileUpload.getInputStream(), null));
+		add(IcalendarValidationService.getValidationResult("result", fileUpload.getInputStream(), null));
 	}
 }
