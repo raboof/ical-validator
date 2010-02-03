@@ -28,10 +28,9 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 	public UrlValidationPage(PageParameters parameters)
 	{
 		try {
-			String[] urls = (String[]) parameters.get("url");
-			if (urls != null && urls.length > 0)
+			String url = getUrl(parameters);
+			if (url != null)
 			{
-				String url = urls[0];
 				init(new URI(url, true));
 			}
 			else
@@ -42,6 +41,27 @@ public class UrlValidationPage extends ValidatorLayoutPage {
 		} catch (URIException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private String getUrl(PageParameters parameters) {
+		Object url = parameters.get("url");
+		if (url == null)
+		{
+			return null;
+		}
+		else if (url instanceof String)
+		{
+			return (String) url;
+		}
+		else if (url instanceof String[])
+		{
+			String[] urls = (String[]) url;
+			if (urls != null && urls.length > 0)
+			{
+				return urls[0];
+			}
+		}
+		return null;
 	}
 
 	private void init(URI uri) {
