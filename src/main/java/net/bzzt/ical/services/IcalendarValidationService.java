@@ -42,6 +42,8 @@ public class IcalendarValidationService {
 	private static final ValidationRuleInfo VALID_CRLF_NEWLINES = new ValidationRuleInfo(
 			"3.1");
 
+	private static final ValidationRuleInfo VALID_EMPTY_LINES = new ValidationRuleInfo("");
+
 	public static WebMarkupContainer getValidationResult(String id,
 			InputStream calendarStream, String charSet) {
 		CollectingValidationResultHandler validationResultHandler = new CollectingValidationResultHandler();
@@ -67,7 +69,7 @@ public class IcalendarValidationService {
 			throw new RuntimeException(e);
 		}
 
-		if (!"utf-8".equals(charSet)) {
+		if (!"utf-8".equalsIgnoreCase(charSet)) {
 			validationResultHandler.onValidationResult(new ValidationResult(
 					null, "Charset was [{0}] instead of utf-8 as recommended",
 					new Object[] { charSet }, VALID_CHARSET_UTF8));
@@ -149,8 +151,8 @@ public class IcalendarValidationService {
 						.onValidationResult(
 								new ValidationResult(
 										null,
-										"Input contains non-[{0}] characters on line {1}",
-										new Object[] { charSet, lineno },
+										"Input contains non-[{0}] characters on line {1}: [{2}]",
+										new Object[] { charSet, lineno, new String(bytes, offset, length) },
 										VALID_CHARSET_UTF8));
 			} catch (ValidationException e1) {
 				throw new RuntimeException(e1);
@@ -162,8 +164,8 @@ public class IcalendarValidationService {
 						.onValidationResult(
 								new ValidationResult(
 										null,
-										"Input contains non-[{0}] characters on line {1}",
-										new Object[] { charSet, lineno },
+										"Input contains non-[{0}] characters on line {1}: [{2}]",
+										new Object[] { charSet, lineno, new String(bytes, offset, length) },
 										VALID_CHARSET_UTF8));
 			} catch (ValidationException e1) {
 				throw new RuntimeException(e1);
@@ -207,6 +209,13 @@ public class IcalendarValidationService {
 					new ValidationResult(null,
 							"CRLF should be used for newlines",
 							VALID_CRLF_NEWLINES));
+		}
+		if (calendarString.contains("\r\n\r\n"))
+		{
+			ValidationResultHandler.get().onValidationResult(
+					new ValidationResult(null,
+							"Feeds should not contain empty lines",
+							VALID_EMPTY_LINES));			
 		}
 		return calendarString;
 	}
