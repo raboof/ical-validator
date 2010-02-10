@@ -20,12 +20,16 @@ public class SingleValidationResult extends Panel {
 		add(new Label("message", model.getText()));
 		WebMarkupContainer link = new WebMarkupContainer("link");
 		WebMarkupContainer rfcLink = new WebMarkupContainer("rfcLink");
+		
+		// http://tools.ietf.org/html/rfc5545
+		
 		if (model.info != null && model.info.getRfcSection() != null) {
+			String url = "http://tools.ietf.org/html/rfc" + model.info.getRfcNumber() + ".html";
 			link.add(new AttributeModifier("href", true, new Model<String>(
-					"http://www.apps.ietf.org/rfc/rfc" + model.info.getRfcNumber() + ".html#sec-"
-							+ model.info.getRfcSection())));
+					url + "#section-"
+					+ model.info.getRfcSection())));
 			rfcLink.add(new AttributeModifier("href", true, new Model<String>(
-					"http://www.apps.ietf.org/rfc/rfc" + model.info.getRfcNumber() + ".html")));
+					url)));
 			link.add(new Label("rfcSection", model.info.getRfcSection()));
 			rfcLink.add(new Label("rfcNumber", model.info.getRfcNumber()));
 		} else {
