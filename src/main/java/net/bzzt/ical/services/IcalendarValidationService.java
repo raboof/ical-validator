@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
@@ -143,7 +144,25 @@ public class IcalendarValidationService {
 		decoder.onMalformedInput(CodingErrorAction.REPORT);
 		decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
 		try {
-			decoder.decode(ByteBuffer.wrap(bytes, offset, length));
+			CharBuffer decoded = decoder.decode(ByteBuffer.wrap(bytes, offset, length));
+			if (decoded.toString().contains("\u00c3"))
+			{
+				try
+				{
+					ValidationResultHandler
+					.get()
+					.onValidationResult(
+							new ValidationResult(
+									null,
+									"Input contains suspicious \u00c3 character on line {0}: [{1}]",
+									new Object[] { lineno, new String(bytes, offset, length) },
+									VALID_CHARSET_UTF8));
+				}
+				catch (ValidationException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
 		} catch (MalformedInputException e) {
 			try {
 				ValidationResultHandler
