@@ -2,6 +2,8 @@ package net.bzzt.ical;
 
 import net.fortuna.ical4j.util.validation.ValidationResult;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,9 +17,21 @@ public class SingleValidationResult extends Panel {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private static final Log LOG = LogFactory.getLog(SingleValidationResult.class);
+	
 	public SingleValidationResult(String id, ValidationResult model) {
 		super(id);
-		add(new Label("message", model.getText()));
+		String text;
+		try
+		{
+			text = model.getText();
+		}
+		catch (Exception e)
+		{
+			text = "Unknown error";
+			LOG.error("Error getting text for validation result: " + e.getMessage(), e);
+		}
+		add(new Label("message", text));
 		WebMarkupContainer link = new WebMarkupContainer("link");
 		WebMarkupContainer rfcLink = new WebMarkupContainer("rfcLink");
 		
